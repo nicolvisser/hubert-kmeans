@@ -1,12 +1,12 @@
 dependencies = ["torch"]
 
 URLS = {
-    "kmeans_50": "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-50.pt",
-    "kmeans_100": "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-100.pt",
-    "kmeans_200": "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-200.pt",
-    "kmeans_500": "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-500.pt",
-    "kmeans_1000": "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-1000.pt",
-    "kmeans_2000": "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-2000.pt",
+    50: "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-50.pt",
+    100: "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-100.pt",
+    200: "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-200.pt",
+    500: "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-500.pt",
+    1000: "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-1000.pt",
+    2000: "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-2000.pt",
 }
 
 import torch
@@ -22,7 +22,7 @@ def _kmeans(
     model = KMeansInference(k=n_clusters, d=768)
     if pretrained:
         checkpoint = torch.hub.load_state_dict_from_url(
-            URLS[f"kmeans_{n_clusters}"], progress=progress
+            URLS[n_clusters], progress=progress
         )
         model = KMeansInference.load_from_checkpoint(checkpoint)
         model.eval()
