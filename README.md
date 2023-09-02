@@ -31,10 +31,15 @@ wav = torch.nn.pad(wav, ((400 - 320) // 2, (400 - 320) // 2))
 features, _ = hubert.encode(wav, layer=7)
 
 # Load k-means model
-kmeans = torch.hub.load("nicolvisser/hubert_kmeans:main", "units_50", trust_repo=True).cuda()
+kmeans = torch.hub.load(
+    "nicolvisser/hubert-kmeans:main",
+    "kmeans",
+    n_clusters=100,
+    trust_repo=True
+).cuda()
 
 # Cluster features
-units = kmeans(features)
+units = kmeans(features).squeeze()
 
 
 ```
