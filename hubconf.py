@@ -1,12 +1,12 @@
 dependencies = ["torch"]
 
 URLS = {
-    "kmeans_50": "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/units-50.pt",
-    "kmeans_100": "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/units-100.pt",
-    "kmeans_200": "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/units-200.pt",
-    "kmeans_500": "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/units-500.pt",
-    "kmeans_1000": "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/units-1000.pt",
-    "kmeans_2000": "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/units-2000.pt",
+    "kmeans_50": "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-50.pt",
+    "kmeans_100": "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-100.pt",
+    "kmeans_200": "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-200.pt",
+    "kmeans_500": "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-500.pt",
+    "kmeans_1000": "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-1000.pt",
+    "kmeans_2000": "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-2000.pt",
 }
 
 import torch
