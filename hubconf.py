@@ -24,7 +24,7 @@ def _kmeans(
         checkpoint = torch.hub.load_state_dict_from_url(
             URLS[n_clusters], progress=progress
         )
-        model = KMeansInference.load_from_checkpoint(checkpoint)
+        model.cluster_centers = checkpoint["cluster_centers_"]
         model.eval()
     return model
 
