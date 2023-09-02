@@ -32,5 +32,5 @@ kmeans_checkpoint["n_features_in_"] = kmeans.centroids.shape[1]
 
 torch.save(
     kmeans_checkpoint,
-    f"checkpoints/units-{k}.pt",
+    f"checkpoints/kmeans-{k}.pt",
 )
