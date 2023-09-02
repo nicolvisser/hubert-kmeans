@@ -9,7 +9,7 @@ class KMeansInference(nn.Module):
 
     def forward(self, features):
         distances = torch.cdist(features, self.cluster_centers)
-        indices = torch.argmin(distances, dim=1)
+        indices = torch.argmin(distances, dim=-1)
         return indices
 
     @classmethod
