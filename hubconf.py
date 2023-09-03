@@ -1,12 +1,16 @@
 dependencies = ["torch"]
 
 URLS = {
-    50: "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-50-7fc95527.pt",
-    100: "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-100-15a551d8.pt",
-    200: "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-200-de177bab.pt",
-    500: "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-500-fd6f8c43.pt",
-    1000: "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-1000-f063d3ed.pt",
-    2000: "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-2000-1333c897.pt",
+    "hubert-bshall": {
+        "librispeech": {
+            50: "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-hubert-bshall-librispeech-50-7fc95527.pt",
+            100: "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-hubert-bshall-librispeech-100-15a551d8.pt",
+            200: "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-hubert-bshall-librispeech-200-de177bab.pt",
+            500: "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-hubert-bshall-librispeech-500-fd6f8c43.pt",
+            1000: "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-hubert-bshall-librispeech-1000-f063d3ed.pt",
+            2000: "https://github.com/nicolvisser/hubert-kmeans/releases/download/v0.1/kmeans-hubert-bshall-librispeech-2000-1333c897.pt",
+        }
+    }
 }
 
 import torch
@@ -15,19 +19,35 @@ from kmeans import KMeansInference
 
 
 def kmeans(
-    n_clusters: int,
+    features: str = "hubert-bshall",
+    dataset: str = "librispeech",
+    n_units: int = 500,
     pretrained: bool = True,
     progress: bool = True,
 ) -> KMeansInference:
-    assert n_clusters in URLS.keys(), f"n_clusters must be one of {URLS.keys()}"
+    available_features = URLS.keys()
+    assert (
+        features in available_features
+    ), f"features must be one of {available_features}"
+    available_datasets = URLS[features].keys()
+    assert (
+        dataset in available_datasets
+    ), f"dataset must be one of {available_datasets}, if you choose {features}"
+    available_units = URLS[features][dataset].keys()
+    assert (
+        n_units in available_units
+    ), f"n_units must be one of {available_units}, if you choose {features} and {dataset}"
 
-    model = KMeansInference(k=n_clusters, d=768)
     if pretrained:
         checkpoint = torch.hub.load_state_dict_from_url(
-            URLS[n_clusters],
+            URLS[features][dataset][n_units],
             progress=progress,
             check_hash=True,
         )
-        model.cluster_centers.data = torch.from_numpy(checkpoint["cluster_centers_"])
-        model.eval()
+        model = KMeansInference.load_from_checkpoint(checkpoint)
+    else:
+        raise NotImplementedError(
+            "Only pretrained models are available. Set pretrained=True"
+        )
+
     return model
