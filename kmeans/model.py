@@ -31,8 +31,12 @@ class KMeansInference(nn.Module):
         return indices[diffs]
 
     @classmethod
-    def load_from_checkpoint(cls, checkpoint_path):
+    def load_from_checkpoint_path(cls, checkpoint_path):
         checkpoint = torch.load(checkpoint_path)
+        return cls.load_from_checkpoint(checkpoint)
+
+    @classmethod
+    def load_from_checkpoint(cls, checkpoint):
         cluster_centers = torch.from_numpy(checkpoint["cluster_centers_"])
         model = cls(cluster_centers.shape[0], cluster_centers.shape[1])
         model.cluster_centers.data = cluster_centers
