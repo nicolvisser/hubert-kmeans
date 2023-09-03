@@ -12,6 +12,24 @@ class KMeansInference(nn.Module):
         indices = torch.argmin(distances, dim=-1)
         return indices
 
+    @torch.inference_mode()
+    def predict(self, features):
+        assert (
+            features.ndim == 2
+        ), f"Expected 2D tensor during inference, got {features.ndim}"
+        return self.forward(features)
+
+    @torch.inference_mode()
+    def predict_and_dedupe(self, features):
+        indices = self.predict(features)
+        diffs = torch.cat(
+            (
+                indices[:-1] != indices[1:],
+                torch.tensor([True], dtype=torch.bool, device=indices.device),
+            )
+        )
+        return indices[diffs]
+
     @classmethod
     def load_from_checkpoint(cls, checkpoint_path):
         checkpoint = torch.load(checkpoint_path)
