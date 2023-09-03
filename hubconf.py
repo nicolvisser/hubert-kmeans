@@ -24,7 +24,9 @@ def kmeans(
     model = KMeansInference(k=n_clusters, d=768)
     if pretrained:
         checkpoint = torch.hub.load_state_dict_from_url(
-            URLS[n_clusters], progress=progress
+            URLS[n_clusters],
+            progress=progress,
+            check_hash=True,
         )
         model.cluster_centers.data = torch.from_numpy(checkpoint["cluster_centers_"])
         model.eval()
