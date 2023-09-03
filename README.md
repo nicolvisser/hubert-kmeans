@@ -39,7 +39,10 @@ kmeans = torch.hub.load(
 ).cuda()
 
 # Cluster features
-units = kmeans(features).squeeze()
+units = kmeans.predict(features.squeeze())
+
+# Optionally dedupe the units (remove consequtive duplicates)
+units = kmeans.predict_deduped(features.squeeze())
 
 
 ```

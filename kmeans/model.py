@@ -20,7 +20,7 @@ class KMeansInference(nn.Module):
         return self.forward(features)
 
     @torch.inference_mode()
-    def predict_and_dedupe(self, features):
+    def predict_deduped(self, features):
         indices = self.predict(features)
         diffs = torch.cat(
             (
