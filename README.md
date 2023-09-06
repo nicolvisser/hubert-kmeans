@@ -1,49 +1,55 @@
-# k-means models for hubert features
+# k-means models for HuBERT features
 
-This repo contains more k-means models for the hubert-discrete model from https://github.com/bshall/hubert
+This repo contains more k-means models for the HuBERT model from https://github.com/bshall/hubert and https://github.com/bshall/soft-vc.
+
+These k-means models can be used in conjunction with these [duration](https://github.com/nicolvisser/duration-predictor) and [acoustic](https://github.com/nicolvisser/acoustic-model) models.
 
 ## Available models
 
-| # Units | Model        |
-| ------- | ------------ |
-| 50      | `units_50`   |
-| 100     | `units_100`  |
-| 200     | `units_200`  |
-| 500     | `units_500`  |
-| 1000    | `units_1000` |
-| 2000    | `units_2000` |
+| # Units | Model                                   |
+| ------- | --------------------------------------- |
+| 50      | `kmeans-hubert-bshall-librispeech-50`   |
+| 100     | `kmeans-hubert-bshall-librispeech-100`  |
+| 200     | `kmeans-hubert-bshall-librispeech-200`  |
+| 500     | `kmeans-hubert-bshall-librispeech-500`  |
+| 1000    | `kmeans-hubert-bshall-librispeech-1000` |
+| 2000    | `kmeans-hubert-bshall-librispeech-2000` |
 
-## Usage
+## Example Usage
 
 ```python
 import torch, torchaudio
 
-# Load hubert checkpoint
-hubert = torch.hub.load("bshall/hubert:main", "hubert_soft", trust_repo=True).cuda()
+# load models
+hubert = torch.hub.load(
+    "bshall/hubert:main",
+    "hubert_discrete",
+    trust_repo=True,
+).cuda()
 
-# Load audio
-wav, sr = torchaudio.load("path/to/wav")
-assert sr == 16000
-wav = wav.unsqueeze(0).cuda()
-
-# Extract features
-wav = torch.nn.pad(wav, ((400 - 320) // 2, (400 - 320) // 2))
-features, _ = hubert.encode(wav, layer=7)
-
-# Load k-means model
 kmeans = torch.hub.load(
     "nicolvisser/hubert-kmeans:main",
     "kmeans",
-    n_clusters=100,
-    trust_repo=True
+    features="hubert-bshall",
+    dataset="librispeech",
+    n_units=50, # <- change this to the number of units you want
+    trust_repo=True,
 ).cuda()
+
+# load audio
+wav, sr = torchaudio.load("path/to/audio")
+assert sr == 16000
+wav = wav.unsqueeze(0).cuda()
+
+# Extract HuBERT features
+wav = torch.nn.functional.pad(wav, ((400 - 320) // 2, (400 - 320) // 2))
+features, _ = hubert.encode(wav, layer=7)
 
 # Cluster features
 units = kmeans.predict(features.squeeze())
 
 # Optionally dedupe the units (remove consequtive duplicates)
 units = kmeans.predict_deduped(features.squeeze())
-
 
 ```
 
