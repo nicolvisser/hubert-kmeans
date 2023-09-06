@@ -6,14 +6,14 @@ These k-means models can be used in conjunction with these [duration](https://gi
 
 ## Available models
 
-| # Units | Model                                   |
-| ------- | --------------------------------------- |
-| 50      | `kmeans-hubert-bshall-librispeech-50`   |
-| 100     | `kmeans-hubert-bshall-librispeech-100`  |
-| 200     | `kmeans-hubert-bshall-librispeech-200`  |
-| 500     | `kmeans-hubert-bshall-librispeech-500`  |
-| 1000    | `kmeans-hubert-bshall-librispeech-1000` |
-| 2000    | `kmeans-hubert-bshall-librispeech-2000` |
+| features          | dataset         | n_units |
+| ----------------- | --------------- | ------- |
+| `"hubert-bshall"` | `"librispeech"` | `50`    |
+|                   |                 | `100`   |
+|                   |                 | `200`   |
+|                   |                 | `500`   |
+|                   |                 | `1000`  |
+|                   |                 | `2000`  |
 
 ## Example Usage
 
